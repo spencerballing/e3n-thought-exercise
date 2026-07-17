@@ -26,7 +26,9 @@ services:
       # Auto-connect to the db service (host is `db`, the service name, not localhost)
       PGWEB_DATABASE_URL: postgresql://postgres:password@db:5432/war_game?sslmode=disable
     depends_on:
-      - db
+      db:
+        condition: service_healthy   # wait until Postgres is ready, not just started
+    restart: unless-stopped          # safety net if it ever loses the connection
 
 volumes:
   pgdata:                             # named volume managed by Docker
