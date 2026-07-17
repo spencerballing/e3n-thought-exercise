@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16                # pinned major version for reproducibility
+    container_name: war_game_db
+    environment:
+      # These match the default DATABASE_URL in src/data/pg.ts:
+      # postgresql://postgres:password@localhost:5432/war_game
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: war_game           # image creates this db on first boot
+    ports:
+      - "5432:5432"                   # host:container — lets your Node app reach it at localhost:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # persist data so it survives `docker compose down` + restarts
+    healthcheck:                      # so you know when it's actually ready to accept connections
+      test: ["CMD-SHELL", "pg_isready -U postgres -d war_game"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  pgweb:                              # browser-based DB viewer at http://localhost:8081
+    image: sosedoff/pgweb
+    ports:
+      - "8081:8081"
+    environment:
+      # Auto-connect to the db service (host is `db`, the service name, not localhost)
+      PGWEB_DATABASE_URL: postgresql://postgres:password@db:5432/war_game?sslmode=disable
+    depends_on:
+      - db
+
+volumes:
+  pgdata:                             # named volume managed by Docker

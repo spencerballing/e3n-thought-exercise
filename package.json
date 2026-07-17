@@ -1,0 +1,26 @@
+{
+  "name": "e3n-thought-exercise",
+  "version": "1.0.0",
+  "description": "A \"Game of War\" card game simulator that persists game data to a database",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "tsx --env-file-if-exists=.env src/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "db:clean": "docker compose down -v",
+    "db:setup": "tsx --env-file-if-exists=.env src/data/setup.ts",
+    "db:reset": "npm run db:setup",
+    "db:init": "npm run db:up && npm run db:setup"
+  },
+  "dependencies": {
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "@types/pg": "^8.11.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.3"
+  }
+}
