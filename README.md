@@ -91,6 +91,16 @@ Three tables (defined in [`db/schema.sql`](db/schema.sql)):
 A game's `status` is one of `started`, `completed`, `draw`, or `max` (the
 1000-round cap was reached with the game unresolved).
 
+### Viewing the data
+
+- **In the browser (easiest):** with the containers running (`npm run db:up`),
+  open **http://localhost:8081**. This is [pgweb](https://github.com/sosedoff/pgweb),
+  a web-based DB viewer included in [`docker-compose.yml`](docker-compose.yml). It
+  auto-connects — no login — so you can browse the tables and run queries straight
+  away.
+- **In a GUI client:** point your favorite tool (e.g. [pgAdmin](https://www.pgadmin.org/))
+  at `localhost:5432`, database `war_game`, user `postgres`, password `password`.
+
 ## Project Structure
 
 ```
